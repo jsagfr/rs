@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Jérôme Guéry <jerome.guery@gmail.com>"]
 description = "RS project"
 homepage = "https://github.com/jsagfr/rs"
+license = "GPL-3.0"
 
 [dependencies]
 zmq = "0.8"

@@ -5,12 +5,44 @@ extern crate nalgebra;
 
 use nalgebra::Vector3;
 use rmps::{to_vec_named, from_slice};
+use std::fmt;
 
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub enum Message {
     Acc(u64, Vec<Vector3<f32>>),
     Gyro(u64, Vec<Vector3<f32>>),
     Magn(u64, Vec<Vector3<f32>>),
+    LinearVelocity(u64, Vector3<f32>),
+}
+
+
+
+fn vectort3_to_string(v: &Vector3<f32>) -> String {
+    format!("[{}]",
+            v.iter()
+                .fold(String::new(),
+                      |acc, &num| acc + &format!("{:.2}", num) + ", "))
+}
+
+fn vec_vector3_to_string(d: &[Vector3<f32>]) -> String {
+    format!("[{}]",
+            d.iter()
+                .fold(String::new(),
+                      |acc, &v| acc + &vectort3_to_string(&v) + ", "))
+}
+
+impl fmt::Display for Message {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            &Message::Acc(n, ref d) => write!(f, "acc : {}, {}", n, vec_vector3_to_string(d)),
+            &Message::Gyro(n, ref d) => write!(f, "gyro: {}, {}", n, vec_vector3_to_string(d)),
+            &Message::Magn(n, ref d) => write!(f, "magn: {}, {}", n, vec_vector3_to_string(d)),
+            &Message::LinearVelocity(n, ref v) => {
+                write!(f, "lvel: {}, {}", n, vectort3_to_string(v))
+            }
+            // _ => write!(f, "TODO")
+        }
+    }
 }
 
 // TODO: Manage errors:
