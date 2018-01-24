@@ -1,2 +1,2 @@
 pub mod stub;
-// pub mod lsm9ds1;
+pub mod lsm9ds1;
